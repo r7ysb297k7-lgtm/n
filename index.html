@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1f1c2c" />
+  <title>好き顔9選メーカー (Eloレーティング)</title>
+  <style>
+    :root {
+      --primary: #ff4b8b;
+      --primary-dark: #d81b60;
+      --bg-gradient: linear-gradient(135deg, #1f1c2c 0%, #928dab 100%);
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.15);
+      --text: #ffffff;
+      --subtext: #e0e0e0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 620px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 6px;
+      background: linear-gradient(45deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--subtext);
+    }
+
+    .status {
+      text-align: center;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+      color: var(--subtext);
+      letter-spacing: 0.04em;
+    }
+
+    .versus-container {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 0;
+      height: min(58vh, 380px);
+      min-height: 230px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .card:hover,
+    .card:focus-visible {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 8px 24px rgba(255, 75, 139, 0.2);
+      outline: none;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--text);
+      min-height: 46px;
+      padding: 12px 10px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateY(-1px);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border: none;
+      grid-column: span 2;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .result-title {
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 1.25rem;
+    }
+
+    .grid-result {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.24);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .grid-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .rank-badge {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(0, 0, 0, 0.66);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 3px 7px;
+      line-height: 1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 420px) {
+      .versus-container {
+        gap: 8px;
+      }
+
+      .card {
+        height: 52vh;
+        min-height: 210px;
+      }
+
+      .controls {
+        gap: 8px;
+      }
+
+      .btn {
+        font-size: 0.84rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>好き顔9選メーカー</h1>
+      <p class="subtitle">直感で好きな写真を選んでね！</p>
+    </header>
+
+    <div class="status" id="status" aria-live="polite">比較 0 / 18</div>
+
+    <section id="versus-screen" aria-label="写真の比較">
+      <div class="versus-container">
+        <button class="card" id="card-left" type="button" aria-label="左の写真を選ぶ">
+          <img id="img-left" src="" alt="候補の写真 左" />
+        </button>
+        <button class="card" id="card-right" type="button" aria-label="右の写真を選ぶ">
+          <img id="img-right" src="" alt="候補の写真 右" />
+        </button>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="both-button" type="button">🩷 どっちも好き</button>
+        <button class="btn" id="skip-button" type="button">⏭️ スキップ</button>
+        <button class="btn btn-primary" id="undo-button" type="button">↩️ 1つ戻る</button>
+      </div>
+    </section>
+
+    <section id="result-screen" class="hidden" aria-label="ランキング結果">
+      <h2 class="result-title">あなたの好き顔9選</h2>
+      <div class="grid-result" id="grid-result"></div>
+      <button class="btn btn-primary" id="restart-button" type="button">🔄 もう一度やり直す</button>
+    </section>
+  </main>
+
+  <script>
+    const imageSources = [
+      "./img1.png",
+      "./img2.png",
+      "./img3.png",
+      "./img4.png",
+      "./img5.png",
+      "./img6.png",
+      "./img7.png",
+      "./img8.png",
+      "./img9.png",
+      "./img10.png",
+      "./img11.png",
+      "./img12.png",
+      "./img13.png",
+      "./img14.png",
+      "./img15.png",
+      "./img16.png",
+      "./ing17.png",
+      "./img18.png",
+      "./img19.png",
+      "./img20.png"
+    ];
+
+    const TARGET_PAIRS = 18;
+    const K_FACTOR = 32;
+
+    let items = [];
+    let currentLeft = null;
+    let currentRight = null;
+    let history = [];
+    let recentPairs = [];
+    let pairCount = 0;
+
+    function buildItems() {
+      return imageSources.map((src, index) => ({
+        id: index,
+        src,
+        rating: 1200
+      }));
+    }
+
+    function updateStatus() {
+      document.getElementById("status").textContent = `比較 ${pairCount} / ${TARGET_PAIRS}`;
+    }
+
+    function getExpectedScore(ratingA, ratingB) {
+      return 1 / (1 + Math.pow(10, (ratingB - ratingA) / 400));
+    }
+
+    function applyElo(leftItem, rightItem, leftScore, rightScore) {
+      const expectedLeft = getExpectedScore(leftItem.rating, rightItem.rating);
+      const expectedRight = getExpectedScore(rightItem.rating, leftItem.rating);
+
+      leftItem.rating = Math.round(leftItem.rating + K_FACTOR * (leftScore - expectedLeft));
+      rightItem.rating = Math.round(rightItem.rating + K_FACTOR * (rightScore - expectedRight));
+    }
+
+    function choosePair() {
+      const allPairs = [];
+      for (let i = 0; i < items.length; i++) {
+        for (let j = i + 1; j < items.length; j++) {
+          const key = [items[i].id, items[j].id].sort((a, b) => a - b).join("-");
+          if (!recentPairs.includes(key)) {
+            allPairs.push([items[i], items[j], key]);
+          }
+        }
+      }
+
+      if (allPairs.length === 0) {
+        recentPairs = [];
+        return choosePair();
+      }
+
+      const chosen = allPairs[Math.floor(Math.random() * allPairs.length)];
+      const [left, right, key] = chosen;
+
+      recentPairs.push(key);
+      if (recentPairs.length > 30) {
+        recentPairs.shift();
+      }
+
+      return [left, right];
+    }
+
+    function nextPair() {
+      const pair = choosePair();
+      currentLeft = pair[0];
+      currentRight = pair[1];
+
+      document.getElementById("img-left").src = currentLeft.src;
+      document.getElementById("img-right").src = currentRight.src;
+    }
+
+    function finishResult() {
+      const resultItems = [...items]
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 9);
+
+      const resultGrid = document.getElementById("grid-result");
+      resultGrid.replaceChildren();
+
+      resultItems.forEach((item, index) => {
+        const itemEl = document.createElement("div");
+        itemEl.className = "grid-item";
+
+        const img = document.createElement("img");
+        img.src = item.src;
+        img.alt = `${index + 1}位`;
+
+        const badge = document.createElement("div");
+        badge.className = "rank-badge";
+        badge.textContent = `#${index + 1}`;
+
+        itemEl.append(img, badge);
+        resultGrid.appendChild(itemEl);
+      });
+
+      document.getElementById("versus-screen").classList.add("hidden");
+      document.getElementById("result-screen").classList.remove("hidden");
+    }
+
+    function recordMatch(winner) {
+      if (!currentLeft || !currentRight) return;
+
+      history.push({
+        left: currentLeft.id,
+        right: currentRight.id,
+        winner,
+        leftRating: currentLeft.rating,
+        rightRating: currentRight.rating
+      });
+
+      if (winner === "left") {
+        applyElo(currentLeft, currentRight, 1, 0);
+      } else if (winner === "right") {
+        applyElo(currentLeft, currentRight, 0, 1);
+      } else {
+        applyElo(currentLeft, currentRight, 1, 1);
+      }
+
+      pairCount += 1;
+      updateStatus();
+
+      if (pairCount >= TARGET_PAIRS) {
+        finishResult();
+        return;
+      }
+
+      nextPair();
+    }
+
+    function undoMatch() {
+      const last = history.pop();
+      if (!last) return;
+
+      const left = items.find(item => item.id === last.left);
+      const right = items.find(item => item.id === last.right);
+
+      if (left && right) {
+        left.rating = last.leftRating;
+        right.rating = last.rightRating;
+      }
+
+      pairCount -= 1;
+      updateStatus();
+      nextPair();
+    }
+
+    function restart() {
+      items = buildItems();
+      history = [];
+      recentPairs = [];
+      pairCount = 0;
+      updateStatus();
+
+      document.getElementById("result-screen").classList.add("hidden");
+      document.getElementById("versus-screen").classList.remove("hidden");
+
+      nextPair();
+    }
+
+    document.getElementById("card-left").addEventListener("click", () => recordMatch("left"));
+    document.getElementById("card-right").addEventListener("click", () => recordMatch("right"));
+    document.getElementById("both-button").addEventListener("click", () => recordMatch("both"));
+    document.getElementById("skip-button").addEventListener("click", nextPair);
+    document.getElementById("undo-button").addEventListener("click", undoMatch);
+    document.getElementById("restart-button").addEventListener("click", restart);
+
+    restart();
+  </script>
+</body>
+</html>
