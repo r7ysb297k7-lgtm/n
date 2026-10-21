@@ -6,7 +6,7 @@
 
 GitHub Pagesで公開後、以下のリンクからプレイできます。
 
-https://r7ysb297k7-lgtm.github.io/nuooo/
+https://r7ysb297k7-lgtm.github.io/n/
 
 `main` ブランチに変更を push すると、自動で公開・更新されます。初回のみ、GitHubリポジトリの **Settings → Pages** で公開元を **GitHub Actions** に設定してください。
 
